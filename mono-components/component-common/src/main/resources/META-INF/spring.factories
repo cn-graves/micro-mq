@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.mono.component.common.config.SpringContextConfig,\
+  com.mono.component.common.config.FolderExistChecker
