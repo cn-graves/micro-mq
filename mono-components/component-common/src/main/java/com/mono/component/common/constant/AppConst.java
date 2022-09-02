@@ -13,6 +13,11 @@ public class AppConst {
     public static final String SERVER_PORT = "server.port";
 
     /**
+     * common folder
+     */
+    public static final String COMMON_FOLDER = "common.folder.path";
+
+    /**
      * ThreadPoolExecutor Max Core Size
      */
     public static final String BUFFER_SIZE = "disruptor.ring-buffer.size";

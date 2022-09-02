@@ -11,6 +11,7 @@ import com.mono.component.common.constant.AppConst;
 import com.mono.component.common.models.msg.FileMessage;
 import com.mono.component.common.utils.EnvUtils;
 import com.mono.service.pong.handler.FileMessageHandler;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -31,6 +32,7 @@ public class MqManager {
      * @author Mono 2022/9/1 22:14 gralves@163.com
      */
     @Bean
+    @ConditionalOnMissingBean(value = RingBuffer.class)
     public RingBuffer<FileMessage> bufferInit() {
         // get buffer size
         String bufferSize = EnvUtils.getProperties(AppConst.BUFFER_SIZE);

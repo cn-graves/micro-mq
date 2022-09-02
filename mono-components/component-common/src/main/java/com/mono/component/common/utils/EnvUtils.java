@@ -1,6 +1,10 @@
 package com.mono.component.common.utils;
 
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.extra.spring.SpringUtil;
+import com.mono.component.common.constant.AppConst;
+import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 
 /**
  * Spring Enviroment Utils
@@ -16,7 +20,7 @@ public class EnvUtils {
      * @author Mono 2022/9/1 21:31 gralves@163.com
      */
     public static String getTargetFolder() {
-        return SpringUtil.getProperty("common.folder.path");
+        return FileUtil.getUserHomePath() + getProperties(AppConst.COMMON_FOLDER);
     }
 
     /**
@@ -27,6 +31,14 @@ public class EnvUtils {
      * @author Mono 2022/9/1 22:04 gralves@163.com
      */
     public static String getProperties(String propertyKey) {
-        return SpringUtil.getProperty("common.folder.path");
+        String res = null;
+        res = SpringUtil.getProperty(propertyKey);
+        if (ObjectUtil.isEmpty(res)) {
+            StandardReactiveWebEnvironment environment = SpringUtil.getBean(StandardReactiveWebEnvironment.class);
+            if (null != environment) {
+                res = environment.getProperty(propertyKey);
+            }
+        }
+        return res;
     }
 }

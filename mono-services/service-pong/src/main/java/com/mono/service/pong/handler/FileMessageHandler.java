@@ -31,7 +31,7 @@ public class FileMessageHandler implements EventHandler<FileMessage> {
      */
     @Override
     public void onEvent(FileMessage fileMessage, long l, boolean b) {
-        Optional.ofNullable(fileMessage).ifPresent(msg -> {
+        Optional.ofNullable(fileMessage).filter(o -> ObjectUtil.isNotEmpty(o.getPayload())).ifPresent(msg -> {
             logger.info("[MessageHandler] handle message => payload: {}", msg.getPayload());
             String realPath = msg.getRealPath();
             // remove file
