@@ -7,7 +7,7 @@ import com.mono.component.common.constant.AppConst;
 import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 
 /**
- * Spring Enviroment Utils
+ * Spring env Utils
  *
  * @author Mono 2022/9/1 21:30 gralves@163.com
  */
