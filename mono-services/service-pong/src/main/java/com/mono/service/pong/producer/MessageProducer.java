@@ -1,6 +1,7 @@
 package com.mono.service.pong.producer;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.thread.NamedThreadFactory;
 import cn.hutool.core.util.ObjectUtil;
 import com.lmax.disruptor.RingBuffer;
 import com.mono.component.common.models.msg.FileMessage;
@@ -15,9 +16,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class MessageProducer implements ApplicationListener<ApplicationReadyEvent> {
+
+    public static ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1, new NamedThreadFactory("MessageProducer-", Boolean.TRUE));
 
     private final RingBuffer<FileMessage> ringBuffer;
 
@@ -36,32 +42,29 @@ public class MessageProducer implements ApplicationListener<ApplicationReadyEven
         // get scan target
         String targetFolder = EnvUtils.getTargetFolder();
         // start
-        Optional.ofNullable(targetFolder).filter(ObjectUtil::isNotEmpty).ifPresent(folder -> {
-            //noinspection InfiniteLoopStatement
-            while (true) {
-                // loop scan files
-                List<File> files = FileUtil.loopFiles(targetFolder, pathname -> {
-                    // file name not in handle mapping
-                    return !HandleMapping.getInstance().contains(pathname.getName());
-                });
-                if (ObjectUtil.isNotEmpty(files)) {
-                    // sort asc by file name
-                    files.sort(Comparator.comparingInt(o -> Integer.parseInt(o.getName())));
-                    for (File file : files) {
-                        if (file.exists()) {
-                            long next = ringBuffer.next();
-                            try {
-                                String fileName = file.getName();
-                                HandleMapping.getInstance().add(fileName);
-                                String payload = FileUtil.readString(file, StandardCharsets.UTF_8);
-                                ringBuffer.get(next).setFileName(fileName).setPayload(payload).setRealPath(FileUtil.getAbsolutePath(file));
-                            } finally {
-                                ringBuffer.publish(next);
-                            }
+        Optional.ofNullable(targetFolder).filter(ObjectUtil::isNotEmpty).ifPresent(folder -> executorService.scheduleAtFixedRate(() -> {
+            // loop scan files
+            List<File> files = FileUtil.loopFiles(targetFolder, pathname -> {
+                // file name not in handle mapping
+                return !HandleMapping.getInstance().contains(pathname.getName());
+            });
+            if (ObjectUtil.isNotEmpty(files)) {
+                // sort asc by file name
+                files.sort(Comparator.comparingInt(o -> Integer.parseInt(o.getName())));
+                for (File file : files) {
+                    if (file.exists()) {
+                        long next = ringBuffer.next();
+                        try {
+                            String fileName = file.getName();
+                            HandleMapping.getInstance().add(fileName);
+                            String payload = FileUtil.readString(file, StandardCharsets.UTF_8);
+                            ringBuffer.get(next).setFileName(fileName).setPayload(payload).setRealPath(FileUtil.getAbsolutePath(file));
+                        } finally {
+                            ringBuffer.publish(next);
                         }
                     }
                 }
             }
-        });
+        }, 0, 1, TimeUnit.MICROSECONDS));
     }
 }

@@ -1,6 +1,7 @@
 package com.mono.service.pong.handler;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.lmax.disruptor.EventHandler;
 import com.mono.component.common.models.msg.FileMessage;
 import org.slf4j.Logger;
@@ -32,9 +33,10 @@ public class FileMessageHandler implements EventHandler<FileMessage> {
     public void onEvent(FileMessage fileMessage, long l, boolean b) {
         Optional.ofNullable(fileMessage).ifPresent(msg -> {
             logger.info("[MessageHandler] handle message => payload: {}", msg.getPayload());
+            String realPath = msg.getRealPath();
             // remove file
-            if (FileUtil.exist(msg.getRealPath())) {
-                FileUtil.del(msg.getRealPath());
+            if (ObjectUtil.isNotEmpty(realPath) && FileUtil.exist(realPath)) {
+                FileUtil.del(realPath);
             }
             // remove handle cache
             HandleMapping.getInstance().remove(msg.getFileName());
