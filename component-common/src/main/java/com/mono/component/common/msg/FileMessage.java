@@ -18,11 +18,14 @@ public class FileMessage {
     @ApiModelProperty("message payload")
     private String payload;
 
-    @ApiModelProperty("file name")
-    private String fileName;
+    @ApiModelProperty("sequence")
+    private Long sequence;
+
+    @ApiModelProperty("error")
+    private Boolean error;
 
     @ApiModelProperty("file path")
-    private String realPath;
+    private String path;
 
     /**
      * get new instance

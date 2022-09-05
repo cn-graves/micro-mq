@@ -15,12 +15,14 @@ class FileMessageTest extends Specification {
     def "testFileMessageInit"() {
         FileMessage message = FileMessage.getInstance()
         Assert.notNull(message)
-        message.setFileName(RandomUtil.randomString(10))
+        message.setSequence(0)
         message.setPayload(RandomUtil.randomString(10))
-        message.setRealPath(RandomUtil.randomString(10))
-        message.getFileName()
+        message.setPath(RandomUtil.randomString(10))
+        message.setError(Boolean.FALSE)
         message.getPayload()
-        message.getRealPath()
+        message.getPath()
+        message.getError()
+        message.getSequence()
         message.toString()
         message.hashCode()
         message == message

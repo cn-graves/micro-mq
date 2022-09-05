@@ -1,10 +1,12 @@
 package com.mono.service.pong.handler
 
-
+import com.mono.component.common.msg.FileMessage
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.TestPropertySource
 import spock.lang.Specification
+
+import java.util.concurrent.ConcurrentHashMap
 
 @AutoConfigureMockMvc
 @TestPropertySource(value = "classpath:application.properties")
@@ -12,8 +14,8 @@ import spock.lang.Specification
 class HandlerMappingTest extends Specification {
 
     def "handlerMappingTest"() {
-        HashSet<String> set = HandleMapping.getInstance()
+        ConcurrentHashMap<Long, FileMessage> mapping = LocalCacheHandler.getInstance()
         expect:
-        null != set
+        null != mapping
     }
 }
