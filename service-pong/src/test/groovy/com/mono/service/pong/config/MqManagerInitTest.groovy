@@ -11,7 +11,7 @@ import org.springframework.test.context.TestPropertySource
 import spock.lang.Specification
 
 @AutoConfigureMockMvc
-@TestPropertySource(value = "classpath:application.properties")
+@TestPropertySource(value = "classpath:bootstrap.properties")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class MqManagerInitTest extends Specification {
 

@@ -1,6 +1,5 @@
 package com.mono.service.pong.handler;
 
-import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.lmax.disruptor.EventHandler;
 import com.mono.component.common.msg.FileMessage;
@@ -32,10 +31,7 @@ public class FileMessageHandler implements EventHandler<FileMessage> {
     @Override
     public void onEvent(FileMessage fileMessage, long l, boolean b) {
         Optional.ofNullable(fileMessage).filter(o -> ObjectUtil.isNotEmpty(o.getPayload())).ifPresent(msg -> {
-            if (!msg.getError()) {
-                logger.info("[MessageHandler] handle message => payload: {}", msg.getPayload());
-                ThreadUtil.execute(() -> LocalCacheHandler.removeSequence(fileMessage.getPath().hashCode()));
-            }
+            logger.info("[MessageHandler] handle message => payload: {}", msg.getPayload());
         });
     }
 }

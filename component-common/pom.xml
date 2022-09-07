@@ -19,7 +19,9 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <spring-boot-dependencies.version>2.6.8</spring-boot-dependencies.version>
-        <hutool-all.version>5.8.5</hutool-all.version>
+        <spring-cloud-alibaba-dependencies>2021.0.1.0</spring-cloud-alibaba-dependencies>
+        <spring-cloud-dependencies.version>2021.0.4</spring-cloud-dependencies.version>
+        <hutool-all.version>5.8.6</hutool-all.version>
         <commons.version>3.12.0</commons.version>
         <springfox-swagger2.version>3.0.0</springfox-swagger2.version>
         <fastjson.version>2.0.12</fastjson.version>
@@ -40,6 +42,20 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring-boot-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba-dependencies}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -82,6 +98,21 @@
             <groupId>com.alibaba.fastjson2</groupId>
             <artifactId>fastjson2</artifactId>
             <version>${fastjson.version}</version>
+        </dependency>
+        <!--SpringCloud bootstrap-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
+        <!-- nacos 注册中心客户端 -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+        <!-- nacos 配置中心客户端 -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-webflux -->
         <dependency>
@@ -147,6 +178,10 @@
             <artifactId>jacoco-maven-plugin</artifactId>
             <version>${jacoco.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -185,7 +220,7 @@
                         <include>com/mono/**/*.class</include>
                     </includes>
                     <excludes>
-                        <exclude>com/mono/component/common/constant/AppConst.class</exclude>
+                        <exclude>com/mono/component/common/constant/*.class</exclude>
                         <exclude>com/mono/component/common/config/*.class</exclude>
                     </excludes>
                 </configuration>
@@ -200,7 +235,7 @@
                     </includes>
                     <excludes>
                         <exclude>com/mono/component/common/config/*.class</exclude>
-                        <exclude>com/mono/component/common/constant/AppConst.class</exclude>
+                        <exclude>com/mono/component/common/constant/*.class</exclude>
                     </excludes>
                     <rules>
                         <rule implementation="org.jacoco.maven.RuleConfiguration">

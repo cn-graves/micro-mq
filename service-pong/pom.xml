@@ -17,6 +17,7 @@
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <maven.compiler.version>3.8.1</maven.compiler.version>
         <spring-boot-dependencies.version>2.6.8</spring-boot-dependencies.version>
+        <spring-cloud-alibaba-dependencies>2021.0.1.0</spring-cloud-alibaba-dependencies>
         <hutool-all.version>5.5.8</hutool-all.version>
         <component-common.version>1.0-SNAPSHOT</component-common.version>
         <disruptor.version>3.4.4</disruptor.version>
@@ -31,6 +32,13 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring-boot-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba-dependencies}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -59,12 +67,6 @@
             <groupId>com.lmax</groupId>
             <artifactId>disruptor</artifactId>
             <version>${disruptor.version}</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.jacoco/jacoco-maven-plugin -->
-        <dependency>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
-            <version>${jacoco.version}</version>
         </dependency>
     </dependencies>
 
